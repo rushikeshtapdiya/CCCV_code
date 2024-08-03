@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 # Define the travel itineraries for the selected cities
 itineraries = {
@@ -121,7 +122,6 @@ itineraries = {
 ### Day 1: Arrival and Luxury Fun
 - Check in at **Taj Mahal Palace** (₹24,000 per night).
 - Private guided tour of local attractions.
-- Fine dining at **Wasabi by Morimoto** (₹5,000 per person) for high-end Japanese cuisine.
 
 ### Day 2: Adventure and Relaxation
 - Visit **Aksa Beach** for water sports.
@@ -321,6 +321,9 @@ else:
     # Logged-in users can access the itinerary
     st.header("Welcome to the Itinerary Generator")
 
+    # Input for travel date
+    travel_date = st.date_input("Select your travel date")
+
     # Select a city
     city = st.selectbox("Select a city:", list(itineraries.keys()))
 
@@ -333,7 +336,7 @@ else:
     # Button to generate itinerary
     if st.button("Generate Itinerary"):
         # Display the itinerary for the selected city, trip type, and budget
-        st.subheader(f"Itinerary for {city}")
+        st.subheader(f"Itinerary for {city} on {travel_date}")
         detailed_itinerary = itineraries[city][trip_type][budget]
         st.markdown(detailed_itinerary)
 
@@ -341,10 +344,22 @@ else:
         st.subheader("Connect with Fellow Travelers")
         demo_users = {
             "Name": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
-            "Rating": [4.5, 4.0, 4.8, 4.2, 4.6]
+            "Number of Trips": [5, 3, 10, 7, 2],
+            "Rating": [4.5, 4.0, 4.8, 4.2, 4.6],
+            "Chat": ["Chat", "Chat", "Chat", "Chat", "Chat"]
         }
         user_df = pd.DataFrame(demo_users)
+        
+        # Adding stars to ratings
+        user_df['Star Rating'] = user_df['Rating'].apply(lambda x: '⭐' * int(x) + '☆' * (5 - int(x)))
+
+        # Display the DataFrame with chat options
         st.dataframe(user_df)
+
+        # Add chat buttons for each user
+        for user in user_df['Name']:
+            if st.button(f"Chat with {user}"):
+                st.success(f"Starting chat with {user}...")
 
     # Logout button
     if st.button("Logout"):
