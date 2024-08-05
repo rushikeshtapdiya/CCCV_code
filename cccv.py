@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 
 # Define the travel itineraries for the selected cities
 itineraries = {
@@ -321,25 +320,47 @@ else:
     # Logged-in users can access the itinerary
     st.header("Welcome to the Itinerary Generator")
 
-    # Input for travel date
-    travel_date = st.date_input("Select your travel date")
+    # User preferences
+    st.subheader("Your Default Preferences Based on History")
+    st.write("Age: 30")
+    st.write("Interests: Adventure, Sightseeing")
+    st.write("Budget: ₹1,00,000 and Below")
+    
+    st.write("You can change your preferences below:")
 
-    # Select a city
+    # User preferences input
     city = st.selectbox("Select a city:", list(itineraries.keys()))
+    age = st.number_input("Age", min_value=18, max_value=100, value=30, step=1)
+    interests = st.multiselect("Interests", ["Adventure", "Sightseeing", "Culture", "Food", "Shopping"], default=["Adventure", "Sightseeing"])
+    budget = st.selectbox("Budget", ["₹50,000 and Below", "₹1,00,000 and Below", "₹2,00,000 and Below"], index=1)
+    travel_date = st.date_input("Travel Date")
 
-    # Select a trip type
-    trip_type = st.selectbox("Select a trip type:", ["Adventure", "Sightseeing", "Fun"])
+    # Previous trips
+    st.subheader("Your Previous Trips")
+    previous_trips = {
+        "Destination": ["Goa", "Rajasthan", "Kerala", "Ladakh"],
+        "Trip Type": ["Adventure", "Sightseeing", "Culture", "Adventure"],
+        "Year": [2019, 2020, 2021, 2022]
+    }
+    trips_df = pd.DataFrame(previous_trips)
+    st.dataframe(trips_df)
 
-    # Select a budget
-    budget = st.selectbox("Select a budget:", ["₹50,000 and Below", "₹1,00,000 and Below", "₹2,00,000 and Below"])
+    # Update preferences button
+    
+    if st.button("Suggested Itineraries based on Updated Preferences"):
 
-    # Button to generate itinerary
-    if st.button("Generate Itinerary"):
-        # Display the itinerary for the selected city, trip type, and budget
-        st.subheader(f"Itinerary for {city} on {travel_date}")
-        detailed_itinerary = itineraries[city][trip_type][budget]
-        st.markdown(detailed_itinerary)
-
+    # Suggest itineraries based on preferences
+        st.subheader("Suggested Itineraries")
+        if "Adventure" in interests:
+            st.write("Adventure Itinerary:")
+            st.markdown(itineraries[city]["Adventure"][budget])
+        if "Sightseeing" in interests:
+            st.write("Sightseeing Itinerary:")
+            st.markdown(itineraries[city]["Sightseeing"][budget])
+        if "Fun" in interests:
+            st.write("Fun Itinerary:")
+            st.markdown(itineraries[city]["Fun"][budget])
+    
         # Demo user DataFrame
         st.subheader("Connect with Fellow Travelers")
         demo_users = {
@@ -352,10 +373,10 @@ else:
         
         # Adding stars to ratings
         user_df['Star Rating'] = user_df['Rating'].apply(lambda x: '⭐' * int(x) + '☆' * (5 - int(x)))
-
+    
         # Display the DataFrame with chat options
         st.dataframe(user_df)
-
+    
         # Add chat buttons for each user
         for user in user_df['Name']:
             if st.button(f"Chat with {user}"):
