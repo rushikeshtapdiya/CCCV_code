@@ -1321,7 +1321,7 @@ else:
 
     # User preferences input
     city = st.selectbox("Select a city:", list(itineraries.keys()))
-    age = st.number_input("Age", min_value=18, max_value=100, value=30, step=1)
+    age = st.number_input("Age", min_value=18, max_value=100, value=25, step=1)
     interests = st.multiselect("Interests", ["Adventure", "Sightseeing", "Culture", "Food", "Shopping"], default=["Adventure", "Sightseeing"])
     budget = st.selectbox("Budget", ["Below ₹10,000", "₹10,000 - ₹50,000", "₹50,000 - ₹1,00,000","Above ₹1,00,000"], index=1)
     travel_date = st.date_input("Travel Date")
