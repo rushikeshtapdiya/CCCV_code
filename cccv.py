@@ -1290,12 +1290,12 @@ st.set_page_config(page_title="Travel Itinerary", page_icon="✈️")
 # Display the logo at the top of the page
 logo_url = 'https://path_to_your_logo/logo.png'  # Replace with your logo URL
 st.image("travelmate_logo_transparent-removebg-preview.png", use_column_width=True)
-st.title("Detailed Travel Itinerary")
+st.title("Personalized Travel Solutions")
 
 # Login functionality
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-
+    st.session_state.logged_in = True
 if not st.session_state.logged_in:
     st.header("Login")
     username = st.text_input("Username", "")
