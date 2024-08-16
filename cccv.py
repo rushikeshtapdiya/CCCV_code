@@ -1313,9 +1313,9 @@ else:
 
     # User preferences
     st.subheader("Your Default Preferences Based on History",divider=True)
-    st.write("Age: 30")
+    st.write("Age: 25")
     st.write("Interests: Adventure, Sightseeing")
-    st.write("Budget: ₹1,00,000 and Below")
+    st.write("Budget: ₹10,000 - ₹50,000")
     
     st.write("You can change your preferences below:")
 
